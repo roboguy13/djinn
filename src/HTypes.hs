@@ -9,6 +9,7 @@ module HTypes(HKind(..), HType(..), HSymbol, hTypeToFormula, pHSymbol, pHType, p
         HClause, HPat, HExpr(HEVar), hPrClause, termToHExpr, termToHClause, getBinderVars) where
 import Text.PrettyPrint.HughesPJ(Doc, renderStyle, style, text, (<>), parens, ($$), vcat, punctuate,
          sep, fsep, nest, comma, (<+>))
+import qualified Text.PrettyPrint.HughesPJ as HughesPJ
 import Data.Char(isAlphaNum, isAlpha, isUpper)
 import Data.List(union, (\\))
 import Control.Monad(zipWithM)
@@ -218,7 +219,7 @@ ppPat :: Int -> HPat -> Doc
 ppPat _ (HPVar s) = text s
 ppPat _ (HPCon s) = text s
 ppPat _ (HPTuple ps) = parens $ fsep $ punctuate comma (map (ppPat 0) ps)
-ppPat _ (HPAt s p) = text s <> text "@" <> ppPat 10 p
+ppPat _ (HPAt s p) = text s HughesPJ.<> text "@" HughesPJ.<> ppPat 10 p
 ppPat p (HPApply a b) = pparens (p > 1) $ ppPat 1 a <+> ppPat 2 b
 
 ppExpr :: Int -> HExpr -> Doc
